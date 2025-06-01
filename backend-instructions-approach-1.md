@@ -3,26 +3,7 @@
 Welcome to the CarClinch Analytics Dashboard project. This repository contains the backend and frontend code for the MVP analytics dashboard, following our chosen **"First Approach"** (using Azure SQL, ASP .NET Core 9 Web API, and React SPA).
 
 ---
-## Table of Contents
 
-1. [Project Overview](#project-overview)
-2. [Team & Collaboration](#team--collaboration)
-   - [Branching Strategy](#branching-strategy)
-   - [Code Review & Merging](#code-review--merging)
-3. [Prerequisites](#prerequisites)
-4. [Repository Structure](#repository-structure)
-5. [Getting Started: Backend API](#getting-started-backend-api)
-   - [1. Clone the Repository](#1-clone-the-repository)
-   - [2. Create Your Feature Branch](#2-create-your-feature-branch)
-   - [3. Install Dependencies](#3-install-dependencies)
-   - [4. Configure Connection String](#4-configure-connection-string)
-   - [5. Build & Run Locally](#5-build--run-locally)
-   - [6. Define API Endpoints](#6-define-api-endpoints)
-6. [Future Steps: Frontend & CI/CD](#future-steps-frontend--cicd)
-7. [Communication & Review Process](#communication--review-process)
-8. [Resources & References](#resources--references)
-
----
 ## Project Overview
 
 We are building the **CarClinch Analytics Dashboard**, which will display search and sales insights by make, model, and body type over time. The dashboard will consist of:
@@ -40,13 +21,6 @@ We are building the **CarClinch Analytics Dashboard**, which will display search
 We have chosen to start with the **First Approach** (no Synapse) so that we can quickly scaffold the core API and agree on data models. Once the backend is stable, we’ll integrate Synapse if required.
 
 ---
-## Team & Collaboration
-
-Team Members (4 total):
-- _Member A_ (You)
-- _Member B_
-- _Member C_
-- _Member D_
 
 We will work collaboratively using Git branches. Each member will:
 
@@ -167,7 +141,7 @@ Open `backend/appsettings.json` and locate the placeholder for `DefaultConnectio
   }
 ```
 
-- Replace `<YOUR_SQL_SERVER>`, `<USERNAME>`, and `<PASSWORD>` with the credentials provided by CarClinch.
+- Replace `<YOUR_SQL_SERVER>`, `<USERNAME>`, and `<PASSWORD>` with the credentials provided by CarClinch. 
 - If you’re testing locally with a local SQL Server instance, update it accordingly (e.g., `Server=(localdb)\\mssqllocaldb;Database=CarClinchDB;Trusted_Connection=True;`).
 
 > **Note:** Never commit real credentials. Use environment variables or Azure Key Vault for production. For now, the placeholder is fine for local dev.
@@ -263,34 +237,3 @@ Then open a PR for review.
   - Later, we’ll add Bicep for SSL, networking, and CI/CD resource connections.
 
 ---
-## Communication & Review Process
-
-- Use **Slack/Teams** (or your preferred channel) for quick questions or blockers.
-- When opening a PR:
-  - Add a clear title (e.g., `Setup: Initial backend & models`).
-  - Provide a short description of changes.
-  - Tag at least one teammate as reviewer.
-- Reviewers should:
-  1. Check for code style consistency.
-  2. Verify endpoint functionality (run locally or via Swagger).
-  3. Ensure no sensitive data is committed.
-- After approval and successful CI checks, merge to `main`.
-- Keep issues and tasks tracked (e.g., using GitHub Issues) for clear visibility.
-
----
-## Resources & References
-
-- [ASP .NET Core 9 Documentation](https://docs.microsoft.com/aspnet/core)
-- [Entity Framework Core 9](https://docs.microsoft.com/ef/core)
-- [React Documentation](https://reactjs.org/docs/getting-started.html)
-- [Azure SQL & Connection Strings](https://docs.microsoft.com/azure/azure-sql)
-- [GitHub Flow & Branching Model](https://guides.github.com/introduction/flow/)
-
----
-> **Next Steps:**
-> 1. Each team member: create your feature branch.
-> 2. Set up the backend skeleton (models, DbContext, controllers).
-> 3. Push your changes and open a PR for review.
-> 4. Once backend endpoints are stable, start frontend scaffolding.
-
-Let’s get started! 🚀
