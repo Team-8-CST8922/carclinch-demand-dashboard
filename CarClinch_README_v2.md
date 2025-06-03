@@ -103,7 +103,7 @@ We’ll begin by scaffolding the backend API. Since we do not yet have a databas
 
 In your terminal, run:
 ```bash
-git clone https://github.com/CarClinch/analytics-dashboard.git
+git clone https://github.com/Team-8-CST8922/carclinch-demand-dashboard.git          
 cd analytics-dashboard
 ```
 
