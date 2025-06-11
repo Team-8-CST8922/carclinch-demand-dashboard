@@ -1,0 +1,6 @@
+@AspDotNet9ApiSample_HostAddress = http://localhost:5160
+
+GET {{AspDotNet9ApiSample_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
