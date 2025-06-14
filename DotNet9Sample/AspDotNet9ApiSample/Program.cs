@@ -1,12 +1,15 @@
 using AspDotNet9ApiSample.Configuration;
 using AspDotNet9ApiSample.Services;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.RegisterInfrastructureServices(builder.Configuration);
 builder.Services.AddResponseCompression();
+//
 builder.Services.AddScoped<SearchCountService>();
+builder.Services.AddScoped<SalesCountService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
