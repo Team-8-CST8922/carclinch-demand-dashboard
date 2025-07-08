@@ -10,6 +10,8 @@ builder.Services.AddResponseCompression();
 //
 builder.Services.AddScoped<SearchCountService>();
 builder.Services.AddScoped<SalesCountService>();
+builder.Services.AddScoped<SeasonalCountService>();
+
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi

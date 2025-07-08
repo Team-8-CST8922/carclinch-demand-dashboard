@@ -1,3 +1,4 @@
+// AspDotNet9ApiSample/Services/SalesCountService.cs
 using AspDotNet9ApiSample.Data;
 using AspDotNet9ApiSample.Data.Entities.CarEntities;
 using AspDotNet9ApiSample.DTO;
@@ -16,10 +17,25 @@ namespace AspDotNet9ApiSample.Services
         public SalesCountService(CarClinchDbContext context) =>
             _context = context;
 
-        public async Task<IEnumerable<SalesCountDto>> GetSalesCountsAsync(DateTime from, DateTime to)
+        public async Task<IEnumerable<SalesCountDto>> GetSalesCountsAsync(
+            DateTime from,
+            DateTime to,
+            string? make,
+            string? model,
+            string? bodyType)
         {
-            return await _context.Set<ArchivedCar>()
-                .Where(c => c.ArchivedDate >= from && c.ArchivedDate <= to)
+            // filter by the date cars were archived (i.e. sold)
+            var q = _context.Set<ArchivedCar>()
+                        .Where(c => c.ArchivedDate >= from && c.ArchivedDate <= to);
+
+            if (!string.IsNullOrWhiteSpace(make))
+                q = q.Where(c => c.Make == make);
+            if (!string.IsNullOrWhiteSpace(model))
+                q = q.Where(c => c.Model == model);
+            if (!string.IsNullOrWhiteSpace(bodyType))
+                q = q.Where(c => c.BodyType == bodyType);
+
+            return await q
                 .GroupBy(c => new {
                     c.Make,
                     c.Model,

@@ -9,25 +9,24 @@ using System.Threading.Tasks;
 
 namespace AspDotNet9ApiSample.Services
 {
-    public class SearchCountService
+    public class SeasonalCountService
     {
         private readonly CarClinchDbContext _context;
-
-        public SearchCountService(CarClinchDbContext context) =>
+        public SeasonalCountService(CarClinchDbContext context) =>
             _context = context;
 
-        public async Task<IEnumerable<SearchCountDto>> GetSearchCountsAsync(
+        public async Task<IEnumerable<SeasonalCountDto>> GetSeasonalCountsAsync(
             DateTime from,
             DateTime to,
-            string? make,
-            string? model,
-            string? bodyType)
+            string? make = null,
+            string? model = null,
+            string? bodyType = null)
         {
-            // start with date filter
+            // base query: filter by date
             var q = _context.Set<ArchivedCar>()
                 .Where(c => c.CreatedDate >= from && c.CreatedDate <= to);
 
-            // apply optional filters
+            // optional filters
             if (!string.IsNullOrWhiteSpace(make))
                 q = q.Where(c => c.Make == make);
             if (!string.IsNullOrWhiteSpace(model))
@@ -35,23 +34,14 @@ namespace AspDotNet9ApiSample.Services
             if (!string.IsNullOrWhiteSpace(bodyType))
                 q = q.Where(c => c.BodyType == bodyType);
 
-            // group by and project
+            // group by month
             return await q
-                .GroupBy(c => new
-                {
-                    c.Make,
-                    c.Model,
-                    c.BodyType,
-                    Date = c.CreatedDate.Date
+                .GroupBy(c => c.CreatedDate.Month)
+                .Select(g => new SeasonalCountDto {
+                    Month = g.Key,
+                    Count = g.Count()
                 })
-                .Select(g => new SearchCountDto
-                {
-                    Make     = g.Key.Make,
-                    Model    = g.Key.Model,
-                    BodyType = g.Key.BodyType,
-                    Date     = g.Key.Date,
-                    Count    = g.Count()
-                })
+                .OrderBy(x => x.Month)
                 .ToListAsync();
         }
     }

@@ -19,10 +19,13 @@ namespace AspDotNet9ApiSample.Controllers
         [HttpGet]
         public async Task<IActionResult> Get(
             [FromQuery] DateTime from,
-            [FromQuery] DateTime to)
+            [FromQuery] DateTime to,
+            [FromQuery] string? make = null,
+            [FromQuery] string? model = null,
+            [FromQuery] string? bodyType = null)
         {
-            IEnumerable<SearchCountDto> results =
-                await _service.GetSearchCountsAsync(from, to);
+            var results = await _service.GetSearchCountsAsync(
+                from, to, make, model, bodyType);
             return Ok(results);
         }
     }
