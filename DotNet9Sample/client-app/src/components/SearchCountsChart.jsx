@@ -1,36 +1,23 @@
-// client-app/src/components/SearchCountsChart.jsx
 import React, { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 
-export default function SearchCountsChart({ from, to, make, model, bodyType }) {
+export default function SearchCountsChart() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    const qs = new URLSearchParams({ from, to });
-    if (make)     qs.append('make', make);
-    if (model)    qs.append('model', model);
-    if (bodyType) qs.append('bodyType', bodyType);
-
-    fetch(`/api/SearchCounts?${qs}`)
+    fetch('/api/SearchCounts')
       .then(r => r.json())
       .then(setData)
       .catch(console.error);
-  }, [from, to, make, model, bodyType]);
+  }, []);
 
-  const chartData = {
-    labels: data.map(d => d.date.substring(0,10)),
-    datasets: [{
-      label: 'Searches',
-      data: data.map(d => d.count),
-      fill: false,
-      tension: 0.1
-    }]
-  };
+  const labels = data.map(d => `${d.year}-${String(d.month).padStart(2,'0')}`);
+  const counts = data.map(d => d.count);
 
   return (
     <div>
-      <h2> Search Counts</h2>
-      <Line data={chartData} />
+      <h2>SUV Archivals Over Time</h2>
+      <Line data={{ labels, datasets:[{ label: 'SUVs', data: counts, fill:false, tension:0.1 }] }} />
     </div>
   );
 }
