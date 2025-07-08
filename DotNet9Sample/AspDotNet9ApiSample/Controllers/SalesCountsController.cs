@@ -1,8 +1,6 @@
-// AspDotNet9ApiSample/Controllers/SalesCountsController.cs
 using AspDotNet9ApiSample.DTO;
 using AspDotNet9ApiSample.Services;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -12,22 +10,15 @@ namespace AspDotNet9ApiSample.Controllers
     [Route("api/[controller]")]
     public class SalesCountsController : ControllerBase
     {
-        private readonly SalesCountService _svc;
-
-        public SalesCountsController(SalesCountService svc) =>
-            _svc = svc;
+        private readonly SalesCountService _service;
+        public SalesCountsController(SalesCountService service) =>
+            _service = service;
 
         [HttpGet]
-        public async Task<IActionResult> Get(
-            [FromQuery] DateTime from,
-            [FromQuery] DateTime to,
-            [FromQuery] string? make     = null,
-            [FromQuery] string? model    = null,
-            [FromQuery] string? bodyType = null)
+        public async Task<ActionResult<IEnumerable<SalesCountDto>>> Get()
         {
-            var results = await _svc.GetSalesCountsAsync(
-                from, to, make, model, bodyType);
-            return Ok(results);
+            var data = await _service.GetSalesCountsAsync();
+            return Ok(data);
         }
     }
 }

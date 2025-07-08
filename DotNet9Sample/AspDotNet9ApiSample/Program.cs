@@ -1,19 +1,20 @@
 using AspDotNet9ApiSample.Configuration;
 using AspDotNet9ApiSample.Services;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.RegisterInfrastructureServices(builder.Configuration);
 builder.Services.AddResponseCompression();
-//
+
+// Replace SeasonalCountService with DurationService & MakeModelDurationService
 builder.Services.AddScoped<SearchCountService>();
 builder.Services.AddScoped<SalesCountService>();
-builder.Services.AddScoped<SeasonalCountService>();
-
+builder.Services.AddScoped<DurationService>();
+builder.Services.AddScoped<MakeModelDurationService>();
 
 builder.Services.AddControllers();
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
@@ -28,7 +29,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseResponseCompression();
 
-// Configure Swagger UI localhost:port/swagger/
+// Configure Swagger UI at localhost:<port>/swagger
 app.UseSwaggerUI(o => o.SwaggerEndpoint("/openapi/v1.json", "Swagger UI"));
 
 app.UseAuthorization();

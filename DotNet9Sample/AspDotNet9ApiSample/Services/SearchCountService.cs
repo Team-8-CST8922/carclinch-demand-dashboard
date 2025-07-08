@@ -1,10 +1,7 @@
 using AspDotNet9ApiSample.Data;
-using AspDotNet9ApiSample.Data.Entities.CarEntities;
 using AspDotNet9ApiSample.DTO;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace AspDotNet9ApiSample.Services
@@ -12,46 +9,45 @@ namespace AspDotNet9ApiSample.Services
     public class SearchCountService
     {
         private readonly CarClinchDbContext _context;
-
         public SearchCountService(CarClinchDbContext context) =>
             _context = context;
 
-        public async Task<IEnumerable<SearchCountDto>> GetSearchCountsAsync(
-            DateTime from,
-            DateTime to,
-            string? make,
-            string? model,
-            string? bodyType)
+        // #2: All SUVs over time
+        public async Task<IEnumerable<SearchCountDto>> GetSuvCountsAsync()
         {
-            // start with date filter
-            var q = _context.Set<ArchivedCar>()
-                .Where(c => c.CreatedDate >= from && c.CreatedDate <= to);
+            var sql = @"
+                SELECT
+                  YEAR(CreatedDate) AS [Year],
+                  MONTH(CreatedDate) AS [Month],
+                  COUNT(*)         AS [Count]
+                FROM ArchivedCar
+                WHERE BodyType = 'SUV'
+                GROUP BY YEAR(CreatedDate), MONTH(CreatedDate)
+                ORDER BY [Year], [Month]";
 
-            // apply optional filters
-            if (!string.IsNullOrWhiteSpace(make))
-                q = q.Where(c => c.Make == make);
-            if (!string.IsNullOrWhiteSpace(model))
-                q = q.Where(c => c.Model == model);
-            if (!string.IsNullOrWhiteSpace(bodyType))
-                q = q.Where(c => c.BodyType == bodyType);
+            return await _context
+                .Set<SearchCountDto>()
+                .FromSqlRaw(sql)
+                .ToListAsync();
+        }
 
-            // group by and project
-            return await q
-                .GroupBy(c => new
-                {
-                    c.Make,
-                    c.Model,
-                    c.BodyType,
-                    Date = c.CreatedDate.Date
-                })
-                .Select(g => new SearchCountDto
-                {
-                    Make     = g.Key.Make,
-                    Model    = g.Key.Model,
-                    BodyType = g.Key.BodyType,
-                    Date     = g.Key.Date,
-                    Count    = g.Count()
-                })
+        // #3: 2024-only SUVs
+        public async Task<IEnumerable<SearchCountDto>> GetAnnualSuvCountsAsync()
+        {
+            var sql = @"
+                SELECT
+                  YEAR(CreatedDate) AS [Year],
+                  MONTH(CreatedDate) AS [Month],
+                  COUNT(*)         AS [Count]
+                FROM ArchivedCar
+                WHERE BodyType = 'SUV'
+                  AND CreatedDate BETWEEN '2024-01-01' AND '2024-12-31'
+                GROUP BY YEAR(CreatedDate), MONTH(CreatedDate)
+                ORDER BY [Year], [Month]";
+
+            return await _context
+                .Set<SearchCountDto>()
+                .FromSqlRaw(sql)
                 .ToListAsync();
         }
     }
