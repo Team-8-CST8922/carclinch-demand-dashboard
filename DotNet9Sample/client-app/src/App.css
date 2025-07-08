@@ -1,0 +1,96 @@
+/* ── App.css ── */
+
+/* Page & body */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #339e37;
+  color: #264d00;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* Header */
+.dashboard-header {
+  background: linear-gradient(90deg, #4caf50 0%, #d1ff5e 100%);
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.dashboard-header h1 {
+  margin: 0;
+  color: white;
+  font-size: 2.5rem;
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.2);
+}
+
+/* Grid: exactly 4 columns, 5th wraps below */
+.chart-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  padding: 2rem 0;
+}
+
+/* Standard card */
+.chart-container {
+  background: #ffffff;
+  padding: 1.25rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Chart titles */
+.chart-container h2 {
+  margin: 0 0 1rem;
+  font-size: 1.25rem;
+  white-space: normal;
+  word-break: break-word;
+}
+
+/* Make chart canvases grow */
+.chart-container > *:not(h2) {
+  flex-grow: 1;
+}
+
+/* (Old canvas cap commented out) */
+/*
+.chart-container canvas {
+  max-height: 200px;
+}
+*/
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0,0,0,0.2);
+  border-radius: 4px;
+}
+
+/* ── Inventory Turnover Scrollable Panel ── */
+
+/* 1) Make the inventory card span full width */
+.inventory-chart {
+  grid-column: 1 / -1;       /* span all 4 columns */
+  background: #ffffff;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* 2) Wrap the chart in a fixed-height, scrollable area */
+.inventory-scroll {
+  max-height: 500px;         /* panel height */
+  overflow-y: auto;
+  padding-right: 0.5rem;     /* avoid scroll bar overlap */
+}
+
+/* 3) Allow only this chart’s canvas to expand */
+.inventory-chart canvas {
+  max-height: none !important;
+}
